@@ -1,0 +1,6 @@
+[submodule "logger"]
+	path = logger
+	url = https://github.com/singhsduos/logger.git
+[submodule "logger-frontend"]
+	path = logger-frontend
+	url = https://github.com/singhsduos/logger-frontend.git
