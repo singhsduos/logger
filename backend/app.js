@@ -2,7 +2,7 @@ const express = require('express')
 const http = require('http')
 const { Server } = require('socket.io')
 const path = require('path')
-const LogService = require('./service/log.service') 
+const LogService = require('./service/log.service')
 
 const logFilePath = path.join('./', 'serverLogs.log')
 
@@ -10,7 +10,11 @@ module.exports = class App {
   constructor (appInit) {
     this.app = express()
     this.httpServer = http.createServer(this.app)
-    this.io = new Server(this.httpServer)
+    this.io = new Server(this.httpServer, {
+      cors: {
+        origin: '*'
+      }
+    })
     this.logService = new LogService(logFilePath)
     this.middleWare(appInit.middleWares)
     this.port = appInit.port
