@@ -17,6 +17,6 @@ process.on('unhandledRejection', ex => {
 app.listen()
 
 
-// setInterval(() => {
-//   FakeLogs()
-// }, 3500)
+setInterval(() => {
+  FakeLogs()
+}, 3500)

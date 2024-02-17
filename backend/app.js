@@ -1,12 +1,17 @@
 const express = require('express')
 const http = require('http')
 const { Server } = require('socket.io')
+const path = require('path')
+const LogService = require('./service/log.service') 
+
+const logFilePath = path.join('./', 'serverLogs.log')
 
 module.exports = class App {
   constructor (appInit) {
     this.app = express()
     this.httpServer = http.createServer(this.app)
     this.io = new Server(this.httpServer)
+    this.logService = new LogService(logFilePath)
     this.middleWare(appInit.middleWares)
     this.port = appInit.port
     this.assets()
@@ -25,9 +30,25 @@ module.exports = class App {
   }
 
   socketEvents () {
-    this.io.on('connection', function (socket) {
+    this.io.on('connection', socket => {
       console.log('New connection established: ' + socket.id)
+
+      this.logService.fetchLogEntries().then(initialLogEntries => {
+        socket.emit('init', initialLogEntries)
+      })
+
+      const logUpdateListener = logEntries => {
+        socket.emit('update-log', logEntries)
+      }
+
+      this.logService.on('logEntriesUpdated', logUpdateListener)
+
+      socket.on('disconnect', () => {
+        this.logService.removeListener('logEntriesUpdated', logUpdateListener)
+      })
     })
+
+    this.logService.watchLogFile()
   }
 
   listen () {
