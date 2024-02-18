@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .log-entry {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-left: 4px solid #3498db;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" id="logContainer">
+        <!-- Log entries will be appended here -->
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
+    <script>
+        const socket = io('http://localhost:3000'); // Connect to the server
+
+        // Function to render log entries
+        function renderLogEntry(logEntry) {
+            const logContainer = document.getElementById('logContainer');
+            // logContainer.innerHTML = '';
+            const logEntryElement = document.createElement('div');
+            logEntryElement.classList.add('log-entry');
+            logEntryElement.textContent = logEntry;
+            logContainer.appendChild(logEntryElement);
+        }
+
+        // Event listener for 'init' event to initialize logs
+        socket.on('init', (initialLogEntries) => {
+            document.getElementById('logContainer').innerHTML = '';
+            initialLogEntries.forEach((logEntry) => {
+                renderLogEntry(logEntry);
+            });
+        });
+
+        socket.on('update-log', (logEntries) => {
+            document.getElementById('logContainer').innerHTML = '';
+            if (Array.isArray(logEntries)) {
+                logEntries.forEach((logEntry) => {
+                    renderLogEntry(logEntry);
+                });
+            } else {
+                renderLogEntry(logEntries);
+            }
+        });
+    </script>
+</body>
+
+</html>

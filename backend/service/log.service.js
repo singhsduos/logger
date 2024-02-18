@@ -1,4 +1,5 @@
 const fs = require('fs').promises
+const fsWatch = require('fs')
 const EventEmitter = require('events')
 const chokidar = require('chokidar')
 const config = require('config')
@@ -24,14 +25,16 @@ class LogService extends EventEmitter {
   }
 
   watchLogFile () {
-    chokidar
-      .watch(this.logFilePath, { ignoreInitial: true })
-      .on('all', async event => {
-        if (event === 'add' || event === 'change') {
+    fsWatch.watch(this.logFilePath, async (eventType, filename) => {
+      if (eventType === 'rename' || eventType === 'change') {
+        try {
           await this.fetchLogEntries()
           this.emit('logEntriesUpdated', this.logEntries)
+        } catch (error) {
+          console.error('Error on file event:', eventType, error)
         }
-      })
+      }
+    })
   }
 }
 

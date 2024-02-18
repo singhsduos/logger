@@ -12,7 +12,7 @@ const FakeLogs = () => {
       console.error('Failed to append to the log file:', err)
       return
     }
-    console.log('New log entry added successfully!')
+    // console.log('New log entry added successfully!')
   })
 }
 
