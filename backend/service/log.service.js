@@ -1,7 +1,6 @@
 const fs = require('fs').promises
 const fsWatch = require('fs')
 const EventEmitter = require('events')
-const chokidar = require('chokidar')
 const config = require('config')
 
 class LogService extends EventEmitter {
