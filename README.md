@@ -2,9 +2,11 @@
 
 Experience live log monitoring with this application, designed for real-time observation of server logs.
 
+
+### <a href="https://logger-frontend-seven.vercel.app/" target="_blank">**Visit Now 🚀**</a>
+
 ## Video Demo
-- https://github.com/singhsduos/logger/assets/32032008/4612a5b8-fdd3-4117-a7b6-d808ce073ab2
-- [Deployed Application](https://logger-frontend-seven.vercel.app/logs)
+- [Video](https://github.com/singhsduos/logger/assets/32032008/4612a5b8-fdd3-4117-a7b6-d808ce073ab2)
 
 ## Description
 
